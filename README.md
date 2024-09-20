@@ -3,7 +3,7 @@
 ## Prerequisites
 
 Before starting, make sure you have the following prerequisites installed:
-- Node.js: [Instalação do Node.js](https://nodejs.org/)
+- [Node.js](https://nodejs.org/)
 
 ## Clone repository
 
