@@ -1,22 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanban
 
-## Getting Started
+## Prerequisites
 
-First, run the development server:
+Before starting, make sure you have the following prerequisites installed:
+- Node.js: [Instalação do Node.js](https://nodejs.org/)
+
+## Clone repository
+
+Create and go to the directory where you want to place the repository
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/NicolasAlvesM/test-frontend-next.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd test-frontend-next
+```
+
+## Installation and running
+Open terminal and execute the following command:
+
+```bash
+  npm install
+  npm run dev
+```
+
+Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
