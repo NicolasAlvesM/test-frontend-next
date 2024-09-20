@@ -30,42 +30,44 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        try{
-        const res = await api.post("/api/v1/auth/signin", {
-          ...credentials
-        },
-          { headers: { "Content-Type": "application/json" } }
-        )
+        try {
+          if (!credentials) {
+            return null
+          }
+          const res = await api.post("/api/v1/auth/signin", {
+            email: credentials.email,
+            password: credentials.password,
+          },
+            { headers: { "Content-Type": "application/json" } }
+          )
+          if (!res) {
+            return null
+          }
+          const { data } = res.data
 
-        if (!res) {
+
+          if (data) {
+            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+            cookies().set('session', data.access_token, {
+              secure: true,
+              expires: expiresAt,
+              sameSite: 'lax',
+              path: '/',
+            })
+            return {
+              ...data.user,
+              access_token: data.access_token,
+            }
+          }
+
+          return null
+        } catch (error) {
           return null
         }
-        const { data } = res.data
-
-
-        if (data) {
-          const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-          cookies().set('session', data.access_token, {
-            httpOnly: true,
-            secure: true,
-            expires: expiresAt,
-            sameSite: 'lax',
-            path: '/',
-          })
-          return {
-            ...data.user,
-            access_token: data.access_token,
-          }
-        }
-
-        return null
-      } catch (error) {
-        return null
-      }
       }
     })
   ]
