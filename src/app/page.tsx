@@ -1,8 +1,14 @@
+import { getServerSession } from "next-auth";
 import LoginForm from "./components/LoginForm";
+import { redirect } from "next/navigation";
 
-export default function Index() {
+export default async function Index() {
+  const session = await getServerSession();
+  if (session) {
+    redirect("/home");
+  } 
   return (
-    <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div>
       <LoginForm />
     </div>
   );

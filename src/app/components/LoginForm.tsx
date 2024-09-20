@@ -13,7 +13,7 @@ export default function LoginForm() {
   }
 
   return (  
-    <div className="flex items-center justify-center bg-gray-100 h-screen w-screen">
+    <div className="flex items-center justify-center bg-gray-100 h-screen w-screen overflow-hidden">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-semibold text-center mb-6">Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
