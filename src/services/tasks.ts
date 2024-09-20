@@ -4,8 +4,8 @@ export const getUserTasks = async (userId: string) => {
   try {
     const { data } = await api.get(`/api/v1/tasks/user/${userId}`);
     return data.data;
-  } catch (error) {
-    console.error('Erro ao buscar tarefas:', error);
+  } catch (error: any) {
+    throw new Error('Erro ao buscar tarefas:', error);
   }
 }
 
@@ -13,8 +13,8 @@ export const getTask = async (taskId: string) => {
   try {
     const { data } = await api.get(`/api/v1/tasks/${taskId}`);
     return data.data;
-  } catch (error) {
-    console.error(`Erro ao buscar tarefa ${taskId}:`, error);
+  } catch (error: any) {
+    throw new Error(`Erro ao buscar tarefa ${taskId}:`, error);
   }
 }
 
@@ -22,8 +22,8 @@ export const createTask = async (task: any) => {
   try {
     const { data } = await api.post('/api/v1/tasks', task);
     return data.data;
-  } catch (error) {
-    console.error('Erro ao criar tarefa:', error);
+  } catch (error: any) {
+    throw new Error('Erro ao criar tarefa:', error);
   }
 }
 
@@ -39,7 +39,7 @@ export const updateTask = async (taskId: string, task: any) => {
 export const deleteTask = async (taskId: string) => {
   try {
     await api.delete(`/api/v1/tasks/${taskId}`);
-  } catch (error) {
-    console.error('Erro ao deletar tarefa:', error);
+  } catch (error: any) {
+    throw new Error('Erro ao deletar tarefa:', error);
   }
 }

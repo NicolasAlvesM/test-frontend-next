@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import Column from './Column';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { createTask, updateTask } from '@/services/tasks';
+import { createTask, deleteTask, updateTask } from '@/services/tasks';
 import NewTaskModal from './NewTaskModal';
+import EditTaskModal from './EditTaskModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export type Task = {
   id: string;
@@ -19,6 +21,10 @@ interface KanbanBoardProps {
 const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBoardProps) => {
   const [tasks, setTasks] = useState<Task[]>(currentTasks);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -73,6 +79,49 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBo
   const inProgressTasks = tasks?.filter((task) => task.status === 'in_progress');
   const completedTasks = tasks?.filter((task) => task.status === 'completed');
 
+  const openEditModal = (task: Task) => {
+    setTaskToEdit(task);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setTaskToEdit(null);
+  };
+
+  const saveTask = async (id: string, title: string, description: string) => {
+    try {
+      const updatedTask = await updateTask(id, { title, description });
+      const updatedTasks = tasks.map((task) => task.id === id ? updatedTask : task);
+      setTasks(updatedTasks);
+      closeEditModal();
+    } catch (error) {
+      console.error('Erro ao editar tarefa:', error);
+    }
+  };
+
+  const openDeleteModal = (taskId: string) => {
+    setTaskToDelete(taskId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setTaskToDelete(null);
+  };
+
+  const confirmDeleteTask = async () => {
+    if (taskToDelete) {
+      try {
+        await deleteTask(taskToDelete);
+        setTasks((prev) => prev.filter((task) => task.id !== taskToDelete));
+        closeDeleteModal();
+      } catch (error) {
+        console.error('Erro ao deletar tarefa:', error);
+      }
+    }
+  };
+
   return (
     <>
       <button
@@ -83,13 +132,40 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBo
       </button>
       <DragDropContext onDragEnd={onDragEnd}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Column title="Pendente" tasks={pendingTasks} droppableId="pending" />
-          <Column title="Em Andamento" tasks={inProgressTasks} droppableId="in_progress" />
-          <Column title="Concluída" tasks={completedTasks} droppableId="completed" />
+          <Column
+            title="Pendente"
+            tasks={pendingTasks}
+            droppableId="pending"
+            onEdit={openEditModal}
+            onDelete={openDeleteModal}
+          />
+          <Column
+            title="Em Andamento"
+            tasks={inProgressTasks}
+            droppableId="in_progress"
+            onEdit={openEditModal}
+            onDelete={openDeleteModal}
+          />
+          <Column
+            title="Concluída"
+            tasks={completedTasks}
+            droppableId="completed"
+            onEdit={openEditModal}
+            onDelete={openDeleteModal}
+          />
         </div>
       </DragDropContext>
       {isModalOpen && (
         <NewTaskModal onClose={closeModal} onSave={handleCreateTask} />
+      )}
+      {isEditModalOpen && taskToEdit && (
+        <EditTaskModal task={taskToEdit} onClose={closeEditModal} onSave={saveTask} />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          onClose={closeDeleteModal}
+          onConfirm={confirmDeleteTask}
+        />
       )}
     </>
   );

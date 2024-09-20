@@ -7,9 +7,11 @@ interface ColumnProps {
   title: string;
   tasks: Task[];
   droppableId: string;
+  onEdit: (task: Task) => void;
+  onDelete: (taskId: string) => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ title, tasks, droppableId }) => {
+const Column: React.FC<ColumnProps> = ({ title, tasks, droppableId, onEdit, onDelete }) => {
   return (
     <div style={{ margin: '0 10px', width: '30%' }}>
       <h2 className="text-lg font-bold mb-2">{title}</h2>
@@ -21,7 +23,7 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, droppableId }) => {
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => (
-              <TaskCard key={task.id} task={task} index={index} />
+              <TaskCard key={task.id} task={task} index={index} onEdit={onEdit} onDelete={onDelete} />
             ))}
             {provided.placeholder}
           </ul>
