@@ -41,18 +41,18 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose, onSave }) 
             className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div className="flex justify-end">
-          <button
-            onClick={handleSave}
-            className="mr-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Salvar
-          </button>
+        <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
           >
             Cancelar
+          </button>
+          <button
+            onClick={handleSave}
+            className="mr-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            Salvar
           </button>
         </div>
       </div>

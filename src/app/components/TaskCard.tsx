@@ -14,23 +14,24 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, index, onEdit, onDelete }) =>
     <Draggable draggableId={String(task.id)} index={index}>
       {(provided) => (
         <div
-          className="bg-white p-3 mb-3 rounded shadow-md"
+          className="bg-white p-3 mb-3 rounded shadow-md flex flex-col gap-2"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
           <h4 className="font-semibold">{task.title}</h4>
+          <hr className='h-[1px]'/>
           <p className="text-sm text-gray-600">{task.description}</p>
-          {task.status != 'completed' && <div className="flex justify-end mt-2 space-x-2">
+          {task.status != 'completed' && <div className="flex justify-center mt-2 space-x-2">
             <button
               onClick={() => onEdit(task)}
-              className="px-2 py-1 bg-yellow-500 text-white text-sm rounded hover:bg-yellow-600"
+              className="px-2 py-1 border-black border-1 border text-black text-sm rounded-md hover:bg-gray-100"
             >
               Editar
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(task.id) }}
-              className="px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+              className="px-2 py-1 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-500"
             >
               Deletar
             </button>

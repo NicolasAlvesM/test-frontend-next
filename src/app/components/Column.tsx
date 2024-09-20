@@ -19,7 +19,7 @@ const Column: React.FC<ColumnProps> = ({ title, tasks, droppableId, onEdit, onDe
         {(provided) => (
           <ul
             ref={provided.innerRef}
-            className='bg-[#F7F8F9] min-h-[500px] flex flex-col pt-2 px-1'
+            className='bg-[#F7F8F9] min-h-[400px] flex flex-col pt-4 px-2 rounded-xl'
             {...provided.droppableProps}
           >
             {tasks.map((task, index) => (

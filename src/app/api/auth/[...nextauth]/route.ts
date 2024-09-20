@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: '/login'
+    signIn: '/'
   },
   callbacks: {
     async session({ session, token, user }: any) {

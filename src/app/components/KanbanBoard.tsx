@@ -16,9 +16,10 @@ export type Task = {
 
 interface KanbanBoardProps {
   currentTasks: Task[];
+  name: string | null | undefined;
 }
 
-const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBoardProps) => {
+const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [], name }: KanbanBoardProps) => {
   const [tasks, setTasks] = useState<Task[]>(currentTasks);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
@@ -124,12 +125,16 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBo
 
   return (
     <>
-      <button
-        onClick={openModal}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Criar Nova Tarefa
-      </button>
+      <div className='flex justify-between'>
+        <h1 className="text-3xl font-semibold mb-4">Olá {name}</h1>
+        <button
+          onClick={openModal}
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Criar Nova Tarefa
+        </button>
+      </div>
+      <hr className='h-[1px] mb-10' />
       <DragDropContext onDragEnd={onDragEnd}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Column

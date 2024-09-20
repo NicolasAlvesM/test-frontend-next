@@ -17,7 +17,7 @@ type User = {
 export default async function Home() {
   const session = await getServerSession(authOptions);
   if (!session) {
-    redirect("/login");
+    redirect("/");
   }
   const user = session.user as User;
   const { data } = await axios.get(`${API_URL}/api/v1/tasks/user/${user.id}`, {
@@ -28,9 +28,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-md p-8 text-center w-[600px]">
-        <h1 className="text-3xl font-semibold mb-4">Olá {session?.user?.name}</h1>
-        <KanbanBoard currentTasks={data.data} />
+      <div className="bg-white rounded-2xl shadow-md p-8 text-center w-[1000px]">
+        <KanbanBoard currentTasks={data.data} name={session.user?.name} />
         <LogoutButton />
       </div>
     </div>
