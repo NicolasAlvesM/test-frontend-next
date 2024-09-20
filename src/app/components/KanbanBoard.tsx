@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Column from './Column';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { api } from '@/services/api';
+import { updateTask } from '@/services/tasks';
 
 export type Task = {
   id: string;
@@ -37,9 +37,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBo
       try {
         const updatedTasks = tasks.map((task) => task.id == draggableId ? { ...task, status: updatedStatus } : task);
         setTasks(updatedTasks);
-        await api.patch(`/api/v1/tasks/${draggableId}`, {
-          status: updatedStatus,
-        });
+        await updateTask(draggableId, { status: updatedStatus });
       } catch (error) {
         const updatedTasks = tasks.map((task) => task.id == draggableId ? { ...task, status: currStatus } : task);
         setTasks(updatedTasks);
