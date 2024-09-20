@@ -11,17 +11,15 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, index }) => {
   return (
     <Draggable draggableId={String(task.id)} index={index}>
       {(provided) => (
-        <li className='mt-4'
+        <div
+          className="bg-white p-3 mb-3 rounded shadow-md"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div
-            className='bg-white shadow-md rounded'>
-            <h4>{task.title}</h4>
-            <p>{task.description}</p>
-          </div>
-        </li>
+          <h4 className="font-semibold">{task.title}</h4>
+          <p className="text-sm text-gray-600">{task.description}</p>
+        </div>
       )}
     </Draggable>
   );

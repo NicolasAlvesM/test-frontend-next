@@ -12,7 +12,7 @@ interface ColumnProps {
 const Column: React.FC<ColumnProps> = ({ title, tasks, droppableId }) => {
   return (
     <div style={{ margin: '0 10px', width: '30%' }}>
-      <h2 className='bg-[#F7F8F9]'>{title}</h2>
+      <h2 className="text-lg font-bold mb-2">{title}</h2>
       <Droppable droppableId={droppableId}>
         {(provided) => (
           <ul

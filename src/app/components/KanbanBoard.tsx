@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import Column from './Column';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { updateTask } from '@/services/tasks';
+import { createTask, updateTask } from '@/services/tasks';
+import NewTaskModal from './NewTaskModal';
 
 export type Task = {
   id: string;
@@ -17,6 +18,26 @@ interface KanbanBoardProps {
 
 const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBoardProps) => {
   const [tasks, setTasks] = useState<Task[]>(currentTasks);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCreateTask = async (title: string, description: string) => {
+    try {
+      const newTask = await createTask({ title, description });
+
+      setTasks((prev) => [...prev, newTask]);
+      closeModal();
+    } catch (error) {
+      console.error('Erro ao criar tarefa:', error);
+    }
+  };
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -53,13 +74,24 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ currentTasks = [] }: KanbanBo
   const completedTasks = tasks?.filter((task) => task.status === 'completed');
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Column title="Pendente" tasks={pendingTasks} droppableId="pending" />
-        <Column title="Em Andamento" tasks={inProgressTasks} droppableId="in_progress" />
-        <Column title="Concluída" tasks={completedTasks} droppableId="completed" />
-      </div>
-    </DragDropContext>
+    <>
+      <button
+        onClick={openModal}
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Criar Nova Tarefa
+      </button>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Column title="Pendente" tasks={pendingTasks} droppableId="pending" />
+          <Column title="Em Andamento" tasks={inProgressTasks} droppableId="in_progress" />
+          <Column title="Concluída" tasks={completedTasks} droppableId="completed" />
+        </div>
+      </DragDropContext>
+      {isModalOpen && (
+        <NewTaskModal onClose={closeModal} onSave={handleCreateTask} />
+      )}
+    </>
   );
 };
 

@@ -31,8 +31,8 @@ export const updateTask = async (taskId: string, task: any) => {
   try {
     const { data } = await api.patch(`/api/v1/tasks/${taskId}`, task);
     return data.data;
-  } catch (error) {
-    console.error('Erro ao atualizar tarefa:', error);
+  } catch (error: any) {
+    throw new Error('Erro ao atualizar tarefa:', error);
   }
 }
 
